@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setup Firestore Collections</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body style="text-align:center; padding-top:100px;">
+  <h2>Initialize Cruise Ship Firestore Collections</h2>
+  <button id="createBtn">Create Sample Data</button>
+  <p id="status"></p>
+
+  <script type="module">
+    import { createInitialCollections } from './js/setupCollections.js';
+
+    const btn = document.getElementById('createBtn');
+    const status = document.getElementById('status');
+
+    btn.onclick = async () => {
+      status.innerText = '⏳ Creating collections...';
+      try {
+        await createInitialCollections();
+        status.innerText = '✅ All collections created successfully!';
+      } catch (err) {
+        console.error(err);
+        status.innerText = '❌ Error creating collections: ' + err.message;
+      }
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voyager Dashboard</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="navbar glass">
+    <h1>🚢 Voyager Dashboard</h1>
+    <button id="signoutBtn" class="btn-outline">Logout</button>
+  </header>
+
+  <main class="container">
+    <section class="grid">
+      <div class="card glass">
+        <h2>🍴 Catering</h2>
+        <input id="c_item" placeholder="Item" />
+        <input id="c_qty" type="number" placeholder="Quantity" />
+        <button id="orderCateringBtn">Place Catering Order</button>
+        <p id="cateringMsg"></p>
+      </div>
+
+      <div class="card glass">
+        <h2>🖊 Stationery</h2>
+        <input id="s_item" placeholder="Item" />
+        <input id="s_qty" type="number" placeholder="Quantity" />
+        <button id="orderStationeryBtn">Order Stationery</button>
+        <p id="stationeryMsg"></p>
+      </div>
+
+      <div class="card glass">
+        <h2>🏨 Resort / 🎬 Movie</h2>
+        <select id="resortType">
+          <option value="oceanview">Ocean View</option>
+          <option value="balcony">Balcony</option>
+        </select>
+        <input id="resortDate" type="date" />
+        <button id="bookResortBtn">Book Resort</button>
+        <p id="resortMsg"></p>
+      </div>
+
+      <div class="card glass">
+        <h2>💅 Beauty Salon</h2>
+        <input id="salonDate" type="date" />
+        <button id="bookSalonBtn">Book Salon</button>
+        <p id="salonMsg"></p>
+      </div>
+
+      <div class="card glass">
+        <h2>💪 Fitness Center</h2>
+        <select id="equipmentSelect">
+          <option value="treadmill">Treadmill</option>
+          <option value="cycle">Cycle</option>
+        </select>
+        <input id="fitnessDate" type="date" />
+        <button id="bookFitnessBtn">Book Fitness</button>
+        <p id="fitnessMsg"></p>
+      </div>
+
+      <div class="card glass">
+        <h2>🎉 Party Hall</h2>
+        <select id="partyType">
+          <option value="birthday">Birthday</option>
+          <option value="wedding">Wedding</option>
+          <option value="business">Business</option>
+        </select>
+        <input id="partyDate" type="date" />
+        <button id="bookPartyBtn">Book Party</button>
+        <p id="partyMsg"></p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="js/voyager.js"></script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🌤️ Indian Weather</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121832;
+      --panel-2: #1b2347;
+      --text: #e9ecf1;
+      --muted: #b8c0d6;
+      --accent: #6ea8fe;
+      --accent-2: #8bd3ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font: 16px/1.4 system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: radial-gradient(1200px 800px at 20% -10%, #1b2347 0%, #0b1020 40%), var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+    }
+    .app {
+      width: min(700px, 94vw);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+      overflow: hidden;
+    }
+    header {
+      padding: 18px 22px;
+      background: linear-gradient(180deg, var(--panel-2), var(--panel));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    h1 { margin: 0; font-size: 1.25rem; }
+    .controls {
+      padding: 16px;
+      background: var(--panel);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: stretch;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    select, button {
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(10,14,30,0.7);
+      color: var(--text);
+      outline: none;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    button {
+      background: linear-gradient(180deg, var(--accent-2), var(--accent));
+      color: #071021;
+      border: none;
+      box-shadow: 0 8px 20px rgba(110,168,254,0.3);
+      transition: transform .06s ease;
+    }
+    button:active { transform: translateY(1px); }
+    .weather {
+      padding: 24px;
+      text-align: center;
+    }
+    .city { font-size: 1.3rem; margin-bottom: 10px; }
+    .temp { font-size: 2rem; margin: 10px 0; }
+    .meta { color: var(--muted); font-size: .95rem; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header><h1>🌤️ Indian Weather</h1></header>
+
+    <div class="controls">
+      <select id="countrySelect">
+        <option value="India">India</option>
+      </select>
+
+      <select id="stateSelect">
+        <option value="">Select State</option>
+      </select>
+
+      <select id="citySelect">
+        <option value="">Select City</option>
+      </select>
+
+      <select id="townSelect">
+        <option value="">Select Town (if any)</option>
+      </select>
+
+      <button onclick="getWeather()">Get Weather</button>
+    </div>
+
+    <div class="weather" id="weatherResult">
+      <p>Select a country, state, and city 🌍</p>
+    </div>
+  </div>
+
+  <script>
+    // Database of states, cities, and towns with coordinates
+    const locations = {
+      "Maharashtra": {
+        "Mumbai": { "": [19.0760, 72.8777] }, // no town
+        "Pune": { "": [18.5204, 73.8567] },
+        "Nagpur": { "Wardha": [20.7453, 78.6022] }
+      },
+      "Karnataka": {
+        "Bengaluru": { "": [12.9716, 77.5946] },
+        "Mysuru": { "": [12.2958, 76.6394] }
+      },
+      "Tamil Nadu": {
+        "Chennai": { "": [13.0827, 80.2707] },
+        "Coimbatore": { "Pollachi": [10.6580, 77.0081] }
+      }
+    };
+
+    const stateSelect = document.getElementById("stateSelect");
+    const citySelect = document.getElementById("citySelect");
+    const townSelect = document.getElementById("townSelect");
+
+    // Load states
+    for (let state in locations) {
+      stateSelect.innerHTML += `<option value="${state}">${state}</option>`;
+    }
+
+    // When state changes -> load cities
+    stateSelect.addEventListener("change", () => {
+      citySelect.innerHTML = `<option value="">Select City</option>`;
+      townSelect.innerHTML = `<option value="">Select Town (if any)</option>`;
+      if (!stateSelect.value) return;
+      const cities = locations[stateSelect.value];
+      for (let city in cities) {
+        citySelect.innerHTML += `<option value="${city}">${city}</option>`;
+      }
+    });
+
+    // When city changes -> load towns
+    citySelect.addEventListener("change", () => {
+      townSelect.innerHTML = `<option value="">Select Town (if any)</option>`;
+      if (!citySelect.value) return;
+      const towns = locations[stateSelect.value][citySelect.value];
+      for (let town in towns) {
+        if (town !== "") {
+          townSelect.innerHTML += `<option value="${town}">${town}</option>`;
+        }
+      }
+    });
+
+    async function getWeather() {
+      const state = stateSelect.value;
+      const city = citySelect.value;
+      const town = townSelect.value;
+
+      if (!state || !city) {
+        document.getElementById("weatherResult").innerHTML = "<p>Please select state and city.</p>";
+        return;
+      }
+
+      const coords = town
+        ? locations[state][city][town]
+        : locations[state][city][""];
+
+      const [lat, lon] = coords;
+
+      try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+        const response = await fetch(url);
+        const data = await response.json();
+
+        document.getElementById("weatherResult").innerHTML = `
+          <div class="city">${town || city}, ${state}, India</div>
+          <div class="temp">🌡️ ${data.current_weather.temperature} °C</div>
+          <div class="meta">💨 Wind: ${data.current_weather.windspeed} km/h</div>
+          <div class="meta">⏰ Time: ${data.current_weather.time}</div>
+        `;
+      } catch (err) {
+        document.getElementById("weatherResult").innerHTML = `<p style="color:yellow;">Error: ${err.message}</p>`;
+      }
+    }
+  </script>
+</body>
+</html>

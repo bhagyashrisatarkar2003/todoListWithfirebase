@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Countdown Timer</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121832;
+      --panel-2: #1b2347;
+      --text: #e9ecf1;
+      --muted: #b8c0d6;
+      --accent: #6ea8fe;
+      --accent-2: #8bd3ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font: 16px/1.4 system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif; 
+      background: radial-gradient(1200px 800px at 20% -10%, #1b2347 0%, #0b1020 40%), var(--bg);
+      color: var(--text); min-height: 100vh; display: grid; place-items: center;
+    }
+    .app {
+      width: min(600px, 94vw);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px; box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+      overflow: hidden; text-align: center;
+    }
+    header {
+      padding: 18px 22px; background: linear-gradient(180deg, var(--panel-2), var(--panel));
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    h1 { margin: 0; font-size: 1.3rem; letter-spacing: .3px; }
+    .timer-display {
+      font-size: 3rem; margin: 30px 0; font-weight: bold; letter-spacing: 3px;
+    }
+    .controls {
+      display: flex; gap: 10px; justify-content: center; margin: 20px 0;
+    }
+    input {
+      width: 70px; padding: 10px; border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(10,14,30,0.7); color: var(--text); text-align: center;
+    }
+    .btn {
+      border: none; outline: none; cursor: pointer; font-weight: 600;
+      padding: 12px 18px; border-radius: 12px; background: linear-gradient(180deg, var(--accent-2), var(--accent));
+      color: #071021; box-shadow: 0 8px 20px rgba(110,168,254,0.3); transition: transform .06s ease;
+    }
+    .btn:active { transform: translateY(1px); }
+    footer {
+      padding: 14px; background: var(--panel); font-size: .9rem; color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header><h1>⏳ Countdown Timer</h1></header>
+
+    <div class="timer-display" id="display">00:00:00</div>
+
+    <div class="controls">
+      <input type="number" id="hours" min="0" placeholder="HH">
+      <input type="number" id="minutes" min="0" max="59" placeholder="MM">
+      <input type="number" id="seconds" min="0" max="59" placeholder="SS">
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="start">Start</button>
+      <button class="btn" id="pause">Pause</button>
+      <button class="btn" id="reset">Reset</button>
+    </div>
+
+    <footer>Set time and press Start to begin countdown</footer>
+  </div>
+
+  <script>
+    const display = document.getElementById("display");
+    const startBtn = document.getElementById("start");
+    const pauseBtn = document.getElementById("pause");
+    const resetBtn = document.getElementById("reset");
+
+    let hoursInput = document.getElementById("hours");
+    let minutesInput = document.getElementById("minutes");
+    let secondsInput = document.getElementById("seconds");
+
+    let timer = null;
+    let totalSeconds = 0;
+    let paused = false;
+
+    function updateDisplay() {
+      let hrs = Math.floor(totalSeconds / 3600);
+      let mins = Math.floor((totalSeconds % 3600) / 60);
+      let secs = totalSeconds % 60;
+      display.textContent =
+        String(hrs).padStart(2, "0") + ":" +
+        String(mins).padStart(2, "0") + ":" +
+        String(secs).padStart(2, "0");
+    }
+
+    function startTimer() {
+      if (timer) return;
+      if (!paused) {
+        totalSeconds =
+          parseInt(hoursInput.value || 0) * 3600 +
+          parseInt(minutesInput.value || 0) * 60 +
+          parseInt(secondsInput.value || 0);
+      }
+      if (totalSeconds <= 0) return;
+
+      timer = setInterval(() => {
+        if (totalSeconds > 0) {
+          totalSeconds--;
+          updateDisplay();
+        } else {
+          clearInterval(timer);
+          timer = null;
+          alert("⏰ Time’s up!");
+        }
+      }, 1000);
+      paused = false;
+    }
+
+    function pauseTimer() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+        paused = true;
+      }
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      timer = null;
+      totalSeconds = 0;
+      paused = false;
+      updateDisplay();
+      hoursInput.value = minutesInput.value = secondsInput.value = "";
+    }
+
+    startBtn.addEventListener("click", startTimer);
+    pauseBtn.addEventListener("click", pauseTimer);
+    resetBtn.addEventListener("click", resetTimer);
+
+    updateDisplay();
+  </script>
+</body>
+</html>

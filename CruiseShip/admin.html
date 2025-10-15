@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Cruise Ship Management</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="navbar glass">
+    <h1>⚙️ Admin Panel</h1>
+    <button id="logoutAdmin" class="btn-outline">Logout</button>
+  </header>
+
+  <main class="container">
+    <section class="grid">
+      <div class="card glass">
+        <h2>🧾 Add Catering Item</h2>
+        <input id="itemName" placeholder="Item name">
+        <input id="itemPrice" placeholder="Price">
+        <button id="addItemBtn">Add Item</button>
+        <p id="itemMsg"></p>
+      </div>
+
+      <div class="card glass">
+        <h2>👨‍✈️ View Registered Voyagers</h2>
+        <button id="loadVoyagersBtn">Load Voyagers</button>
+        <pre id="voyagerList"></pre>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

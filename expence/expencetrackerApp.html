@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Expense Tracker (INR)</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121832;
+      --panel-2: #1b2347;
+      --text: #e9ecf1;
+      --muted: #b8c0d6;
+      --accent: #6ea8fe;
+      --accent-2: #8bd3ff;
+    }
+    body {
+      margin: 0; font: 16px/1.4 system-ui, sans-serif; 
+      background: radial-gradient(1200px 800px at 20% -10%, #1b2347 0%, #0b1020 40%), var(--bg);
+      color: var(--text); min-height: 100vh; display: grid; place-items: center;
+    }
+    .app {
+      width: min(750px, 95vw);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px; box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+      overflow: hidden;
+    }
+    header {
+      padding: 18px 22px; background: linear-gradient(180deg, var(--panel-2), var(--panel));
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    h1 { margin: 0; font-size: 1.25rem; }
+    .stat-box {
+      margin-top: 10px; text-align: center;
+      background: rgba(255,255,255,0.05);
+      padding: 10px 14px; border-radius: 12px;
+    }
+    .stat-label { font-size: .9rem; color: var(--muted); }
+    .stat-value { font-size: 1.2rem; font-weight: bold; margin-top: 4px; }
+    .composer {
+      display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 10px;
+      padding: 14px; background: var(--panel);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .composer input {
+      padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(10,14,30,0.7); color: var(--text); outline: none;
+    }
+    .composer input::placeholder { color: #95a1bf; }
+    .btn {
+      border: none; cursor: pointer; font-weight: 600;
+      padding: 12px 16px; border-radius: 12px;
+      background: linear-gradient(180deg, var(--accent-2), var(--accent));
+      color: #071021; box-shadow: 0 8px 20px rgba(110,168,254,0.3);
+    }
+    ul#list { list-style: none; padding: 0; margin: 0; }
+    .month-group {
+      background: var(--panel-2);
+      padding: 8px 14px; font-weight: bold;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex; justify-content: space-between;
+    }
+    li.item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
+    }
+    .item-left { display: flex; flex-direction: column; }
+    .amount.expense { color: #ff7a7a; }
+    .iconbtn {
+      background: transparent; border: 1px solid rgba(255,255,255,0.12);
+      color: var(--muted); padding: 6px 10px; border-radius: 10px; cursor: pointer;
+    }
+    .empty { text-align: center; padding: 28px; color: var(--muted); }
+    footer { padding: 12px 16px; background: var(--panel); font-size: .9rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>📅 Expense Tracker (INR)</h1>
+      <div class="stat-box">
+        <div class="stat-label">Overall Total Expenses</div>
+        <div id="expenses" class="stat-value">₹0</div>
+      </div>
+    </header>
+
+    <div class="composer">
+      <input id="desc" type="text" placeholder="Description">
+      <input id="amount" type="number" placeholder="Amount (₹)">
+      <input id="date" type="date" min="2020-01-01">
+      <button id="addBtn" class="btn">Add</button>
+    </div>
+
+    <ul id="list"></ul>
+    <div id="empty" class="empty">No expenses yet. Add one! 📝</div>
+
+    <footer>Track expenses month by month (saved locally)</footer>
+  </div>
+
+  <script>
+    const els = {
+      list: document.getElementById('list'),
+      empty: document.getElementById('empty'),
+      desc: document.getElementById('desc'),
+      amount: document.getElementById('amount'),
+      date: document.getElementById('date'),
+      addBtn: document.getElementById('addBtn'),
+      expenses: document.getElementById('expenses'),
+    };
+
+    let transactions = JSON.parse(localStorage.getItem('transactions') || '[]');
+
+    function save() {
+      localStorage.setItem('transactions', JSON.stringify(transactions));
+    }
+
+    function formatINR(num) {
+      return num.toLocaleString("en-IN", { style: "currency", currency: "INR" });
+    }
+
+    function updateStats() {
+      let total = transactions.reduce((s, t) => s + t.amount, 0);
+      els.expenses.textContent = formatINR(Math.abs(total));
+    }
+
+    function render() {
+      els.list.innerHTML = '';
+
+      // Group by month-year
+      const groups = {};
+      transactions.forEach(t => {
+        const date = new Date(t.date);
+        const key = date.toLocaleString("en-IN", { month: "long", year: "numeric" });
+        if (!groups[key]) groups[key] = [];
+        groups[key].push(t);
+      });
+
+      Object.keys(groups).forEach(month => {
+        const monthTotal = groups[month].reduce((s, t) => s + t.amount, 0);
+
+        const monthDiv = document.createElement("div");
+        monthDiv.className = "month-group";
+        monthDiv.innerHTML = `
+          <span>${month}</span>
+          <span>Total: ${formatINR(Math.abs(monthTotal))}</span>
+        `;
+        els.list.appendChild(monthDiv);
+
+        groups[month].forEach(t => {
+          const li = document.createElement('li');
+          li.className = 'item';
+          li.innerHTML = `
+            <div class="item-left">
+              <span>${t.desc}</span>
+              <span class="amount expense">-${formatINR(Math.abs(t.amount))}</span>
+            </div>
+            <button class="iconbtn">Delete</button>
+          `;
+          li.querySelector('button').addEventListener('click', () => {
+            transactions = transactions.filter(x => x !== t);
+            save(); render();
+          });
+          els.list.appendChild(li);
+        });
+      });
+
+      els.empty.style.display = transactions.length ? 'none' : 'block';
+      updateStats();
+    }
+
+    function addTransaction(desc, amount, date) {
+      desc = desc.trim();
+      if (!desc || isNaN(amount) || amount <= 0 || !date) return;
+      const year = new Date(date).getFullYear();
+      if (year < 2020) return; // block invalid years
+      transactions.unshift({ desc, amount: -Math.abs(parseFloat(amount)), date });
+      save(); render();
+    }
+
+    els.addBtn.addEventListener('click', () => {
+      addTransaction(els.desc.value, parseFloat(els.amount.value), els.date.value);
+      els.desc.value = ''; els.amount.value = ''; els.date.value = '';
+    });
+
+    render();
+  </script>
+</body>
+</html>

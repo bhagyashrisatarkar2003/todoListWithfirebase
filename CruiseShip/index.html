@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cruise Ship Management - Login</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-card glass">
+      <h1 class="brand">🛳 Cruise Ship Management</h1>
+      <div id="login-section">
+        <h2>Sign In</h2>
+        <input id="email" type="email" placeholder="Email" />
+        <input id="password" type="password" placeholder="Password" />
+        <button id="loginBtn">Login</button>
+        <p class="muted">Don't have an account? <a id="show-register">Register</a></p>
+        <p id="loginMsg"></p>
+      </div>
+
+      <div id="register-section" style="display:none;">
+        <h2>Create Account</h2>
+        <input id="r_name" type="text" placeholder="Full Name" />
+        <input id="r_email" type="email" placeholder="Email" />
+        <input id="r_password" type="password" placeholder="Password" />
+        <button id="registerBtn">Register</button>
+        <p class="muted">Already have an account? <a id="show-login">Login</a></p>
+        <p id="registerMsg"></p>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="js/auth.js"></script>
+</body>
+</html>
