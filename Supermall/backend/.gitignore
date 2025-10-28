@@ -1,0 +1,57 @@
+# ----------------------------------------
+# 🧱 SuperMall Backend (.gitignore)
+# ----------------------------------------
+
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.package-lock.json
+.pnpm-store/
+
+# Firebase service account (PRIVATE KEY)
+serviceAccountKey.json
+.env
+.env.local
+firebase-debug.log
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+
+# System / OS files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+desktop.ini
+
+# IDE / Editor settings
+.vscode/
+.idea/
+*.swp
+
+# Build or cache outputs
+dist/
+build/
+.cache/
+coverage/
+
+# Firebase / Cloud related
+.firebase/
+.firebaserc
+
+# ----------------------------------------
+# End of file
+# ----------------------------------------
