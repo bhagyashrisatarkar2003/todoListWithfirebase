@@ -1,12 +1,5 @@
-// auth.js
 import { db } from './firebaseConfig.js';
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  addDoc
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { logEvent } from './logger.js';
 
 const loginBtn = document.getElementById('loginBtn');
@@ -14,31 +7,24 @@ const registerBtn = document.getElementById('registerBtn');
 const showRegister = document.getElementById('show-register');
 const showLogin = document.getElementById('show-login');
 
-// --- Toggle Login/Register ---
-if (showRegister) {
-  showRegister.onclick = () => {
-    document.getElementById('login-section').style.display = 'none';
-    document.getElementById('register-section').style.display = 'block';
-  };
-}
-if (showLogin) {
-  showLogin.onclick = () => {
-    document.getElementById('login-section').style.display = 'block';
-    document.getElementById('register-section').style.display = 'none';
-  };
-}
+// Toggle Login/Register
+if (showRegister) showRegister.onclick = () => {
+  document.getElementById('login-section').style.display = 'none';
+  document.getElementById('register-section').style.display = 'block';
+};
+if (showLogin) showLogin.onclick = () => {
+  document.getElementById('login-section').style.display = 'block';
+  document.getElementById('register-section').style.display = 'none';
+};
 
-// --- LOGIN FLOW ---
+// LOGIN FLOW
 if (loginBtn) {
   loginBtn.onclick = async () => {
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
 
     try {
-      const q = query(collection(db, "users"),
-        where("email", "==", email),
-        where("password", "==", password)
-      );
+      const q = query(collection(db, "users"), where("email", "==", email), where("password", "==", password));
       const snapshot = await getDocs(q);
 
       if (snapshot.empty) {
@@ -68,7 +54,7 @@ if (loginBtn) {
   };
 }
 
-// --- REGISTER FLOW ---
+// REGISTER FLOW
 if (registerBtn) {
   registerBtn.onclick = async () => {
     const name = document.getElementById('r_name').value.trim();
@@ -83,7 +69,6 @@ if (registerBtn) {
         role: "customer",
         createdAt: new Date().toISOString()
       });
-
       logEvent("REGISTER_SUCCESS", email);
       document.getElementById('registerMsg').innerText = "✅ Registered successfully! You can now log in.";
     } catch (e) {
@@ -91,10 +76,4 @@ if (registerBtn) {
       logEvent("REGISTER_ERROR", e.message);
     }
   };
-}
-
-// --- LOGOUT ---
-export function logout() {
-  logEvent("LOGOUT", {});
-  window.location.href = "index.html";
 }
