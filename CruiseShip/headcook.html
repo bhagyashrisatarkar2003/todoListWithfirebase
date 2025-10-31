@@ -3,23 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Head Cook - Cruise Ship Management</title>
+  <title>Head Cook Dashboard</title>
   <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/firebaseConfig.js"></script>
+  <script type="module" src="js/logger.js"></script>
+  <script type="module" src="js/headCook.js" defer></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8fafc;
+      padding: 1.5rem;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    #ordersList {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    .order-card {
+      border-bottom: 1px solid #eee;
+      padding: 0.5rem 0;
+    }
+    .order-card:last-child {
+      border-bottom: none;
+    }
+    .order-item {
+      font-weight: bold;
+    }
+    .order-qty {
+      color: #007bff;
+    }
+  </style>
 </head>
+
 <body>
-  <header class="navbar glass">
-    <h1>👨‍🍳 Head Cook Dashboard</h1>
-    <button id="logoutCook" class="btn-outline">Logout</button>
-  </header>
+  <h1>🍳 Head Cook Dashboard</h1>
+  <p>Below is the list of all catering orders placed by voyagers:</p>
 
-  <main class="container">
-    <div class="card glass">
-      <h2>🍴 View Catering Orders</h2>
-      <button id="viewOrdersBtn">Load Orders</button>
-      <pre id="ordersList"></pre>
-    </div>
-  </main>
-
-  <script type="module" src="js/headCook.js"></script>
+  <section id="ordersList">
+    <p>Loading catering orders...</p>
+  </section>
 </body>
 </html>

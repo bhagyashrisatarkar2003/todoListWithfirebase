@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voyager Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/firebaseConfig.js"></script>
+  <script type="module" src="js/logger.js"></script>
+  <script type="module" src="js/voyager.js" defer></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9fafc;
+      color: #333;
+      padding: 1rem 2rem;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    section {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.5rem;
+      background: #fff;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    label { display: block; margin: 0.5rem 0 0.2rem; }
+    input, select {
+      width: 100%;
+      padding: 0.4rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 0.6rem;
+      padding: 0.5rem 1rem;
+      background: #007bff;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover { background: #0056b3; }
+    p.msg { color: green; font-weight: bold; margin-top: 0.5rem; }
+  </style>
+</head>
+
+<body>
+  <h1>Voyager Control Panel</h1>
+
+  <!-- Catering Orders -->
+  <section id="cateringSection">
+    <h2>Catering Orders</h2>
+    <label>Item Name</label>
+    <input type="text" id="c_item" placeholder="Enter item name">
+    <label>Quantity</label>
+    <input type="number" id="c_qty" placeholder="Enter quantity">
+    <button id="orderCateringBtn">Order Catering Item</button>
+    <p id="cateringMsg" class="msg"></p>
+  </section>
+
+  <!-- Stationery Orders -->
+  <section id="stationerySection">
+    <h2>Stationery Orders</h2>
+    <label>Item Name</label>
+    <input type="text" id="s_item" placeholder="Enter item name">
+    <label>Quantity</label>
+    <input type="number" id="s_qty" placeholder="Enter quantity">
+    <button id="orderStationeryBtn">Order Stationery Item</button>
+    <p id="stationeryMsg" class="msg"></p>
+  </section>
+
+  <!-- Resort Booking -->
+  <section id="resortSection">
+    <h2>Book Resort / Movie</h2>
+    <label>View Type</label>
+    <select id="resortType">
+      <option value="Oceanview">Oceanview</option>
+      <option value="Balcony">Balcony View</option>
+      <option value="Corridor">Corridor View</option>
+      <option value="Lounge">Lounge</option>
+    </select>
+    <label>Date</label>
+    <input type="date" id="resortDate">
+    <button id="bookResortBtn">Book Resort / Movie</button>
+    <p id="resortMsg" class="msg"></p>
+  </section>
+
+  <!-- Salon Booking -->
+  <section id="salonSection">
+    <h2>Book Beauty Salon</h2>
+    <label>Date</label>
+    <input type="date" id="salonDate">
+    <button id="bookSalonBtn">Book Salon</button>
+    <p id="salonMsg" class="msg"></p>
+  </section>
+
+  <!-- Fitness Booking -->
+  <section id="fitnessSection">
+    <h2>Book Fitness Center</h2>
+    <label>Equipment Type</label>
+    <select id="equipmentSelect">
+      <option value="Treadmill">Treadmill</option>
+      <option value="Weights">Weights</option>
+      <option value="Cycle">Cycle</option>
+      <option value="Cross Trainer">Cross Trainer</option>
+    </select>
+    <label>Date</label>
+    <input type="date" id="fitnessDate">
+    <button id="bookFitnessBtn">Book Fitness</button>
+    <p id="fitnessMsg" class="msg"></p>
+  </section>
+
+  <!-- Party Hall Booking -->
+  <section id="partySection">
+    <h2>Book Party Hall</h2>
+    <label>Party Type</label>
+    <select id="partyType">
+      <option value="Birthday">Birthday</option>
+      <option value="Wedding">Wedding</option>
+      <option value="Engagement">Engagement</option>
+      <option value="Business">Business</option>
+      <option value="Get-together">Get-together</option>
+    </select>
+    <label>Date</label>
+    <input type="date" id="partyDate">
+    <button id="bookPartyBtn">Book Party Hall</button>
+    <p id="partyMsg" class="msg"></p>
+  </section>
+
+  <footer>
+    <p style="text-align:center; margin-top:2rem;">© 2025 Cruise Ship Management System</p>
+  </footer>
+</body>
+</html>
