@@ -1,0 +1,14 @@
+to run this project 
+
+cd backend
+npm install        # install dependencies
+node server.js     # or use nodemon if installed
+
+Simply open index.html in your browser:
+Supermall/index.html
+
+Requirements
+Make sure you have installed:
+Node.js ≥ v16
+npm (comes with Node)
+A valid Firebase project (if you use Firebase Admin SDK)
