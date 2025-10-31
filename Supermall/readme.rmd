@@ -14,5 +14,20 @@ Built using **HTML, CSS, and JavaScript** only — no backend required.
 
 ---
 
-## 🧩 Project Structure
+
+🧾 SUPER MALL TEST LOGIN USERS
+===============================
+
+👑 Admin User
+Email: admin@supermall.com
+Password: admin123
+
+🏪 Merchant User
+Email: merchant@supermall.com
+Password: merchant123
+
+🧍 Customer User
+Email: customer@supermall.com
+Password: customer123
+===============================
 
