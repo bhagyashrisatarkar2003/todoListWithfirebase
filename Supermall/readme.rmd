@@ -1,14 +1,18 @@
-to run this project 
+# 🛍️ SuperMall Web Application
 
-cd backend
-npm install        # install dependencies
-node server.js     # or use nodemon if installed
+A simple Firebase + Firestore powered web app for managing shops, offers, and users (Admin / Merchant / Customer).  
+Built using **HTML, CSS, and JavaScript** only — no backend required.
 
-Simply open index.html in your browser:
-Supermall/index.html
+---
 
-Requirements
-Make sure you have installed:
-Node.js ≥ v16
-npm (comes with Node)
-A valid Firebase project (if you use Firebase Admin SDK)
+## 🚀 Features
+- User Registration & Login (using Firestore)
+- Role-based redirects (Admin / Merchant / Customer)
+- Manage shops and offers
+- Ready-to-run local setup with Firebase
+- Includes test data for immediate demo
+
+---
+
+## 🧩 Project Structure
+
